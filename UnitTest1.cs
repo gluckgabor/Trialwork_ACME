@@ -16,6 +16,9 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
 using OpenQA.Selenium.Edge;
+using System.Collections;
+using OpenQA.Selenium.DevTools.V113.Runtime;
+using System.Drawing;
 
 namespace Selenium.NetCore.Test
 {
@@ -71,20 +74,11 @@ namespace Selenium.NetCore.Test
             var pathDrivers = "C:/Users/gluck/.nuget/packages/selenium.webdriver.chromedriver/114.0.5735.1600/driver/win32";
 
             //"C:/Users/gluck/OneDrive/Documents/1 Structured Random Kft/elszámolás/2 OLM/selenium-cshap-sample-master/drivers
-            webDriver = new ChromeDriver(pathDrivers);
-
-            var driverService = InternetExplorerDriverService.CreateDefaultService(@"C:\Users\gluck\.nuget\packages\webdriver.iedriverserver.win64\3.150.1");
-
-            var options = new InternetExplorerOptions();
-
-            // Set the desired capabilities
-            options.IgnoreZoomLevel = true;
-            options.IntroduceInstabilityByIgnoringProtectedModeSettings = true;
-            options.ForceCreateProcessApi = true;
-            // Create an instance of InternetExplorerDriver            
-            //IEdriver = new InternetExplorerDriver(driverService, options);
-            //new DriverManager().SetUpDriver(new ChromeConfig());
-            //webDriver = new ChromeDriver();
+            
+            ChromeOptions options = new ChromeOptions();
+            options.AddExcludedArgument("enable-automation");
+            webDriver = new ChromeDriver(pathDrivers, options);
+            //WebDriver driver = new ChromeDriver();
 
             Debug.Print("dirGG" + directory);
         }
@@ -119,7 +113,7 @@ namespace Selenium.NetCore.Test
         //[Fact]
         //public void OLM_0_1_SetToBlocked()
         //{
-        //    webDriver.Navigate().GoToUrl("https://olm.testcaselab.com/projects/OLM/test_runs/73776?sort_by=created_at&sort_dir=asc");
+        //    webDriver.Navigate().GoToUrl("https://olm.testcaselab.com/projects/OLM/test_runs/74883?sort_dir=asc");
         //    webDriver.Manage().Window.Maximize();
 
         //    Thread.Sleep(1000);
@@ -291,75 +285,96 @@ namespace Selenium.NetCore.Test
             }
         }
 
+
         internal static void assigmentOnFE(List<TestcaseIDline> TestcaseIDlines)
         {
             //load testcaselab website
-            webDriver.Navigate().GoToUrl("https://olm.testcaselab.com/projects/OLM/test_runs/73776?sort_by=created_at&sort_dir=asc");
+            webDriver.Navigate().GoToUrl("https://olm.testcaselab.com/projects/OLM/test_runs/74883?sort_dir=asc");
             webDriver.Manage().Window.Maximize();
 
             Thread.Sleep(1000);
 
-            //login to testcaselab
+            //Login to testcaselab
             webDriver.FindElement(By.XPath("/html/body/div[1]/div[3]/div/div/form/div[1]/div/input")).SendKeys("gluckgabor@gmail.com");
             webDriver.FindElement(By.Name("user[password]")).SendKeys("Bumblebee12");
+            Thread.Sleep(1500);
+
+            WebDriverWait wait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(100));
+            
+            //Find and click Accept all
+            wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[contains(text(), 'Accept all')]")));
+            webDriver.FindElement(By.XPath("//*[contains(text(), 'Accept all')]")).Click();
+            Thread.Sleep(500);
+
+            //Click Submit
             webDriver.FindElement(By.XPath("/html/body/div[1]/div[3]/div/div/form/div[4]/input")).Click();
 
             Thread.Sleep(3000);
 
-            WebDriverWait wait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(100));
             var jse = (IJavaScriptExecutor)webDriver;
+            //scrollLeftmostDiv();
+
+            IList<IWebElement> scrollLeftmostDiv()
+            {
+                //Scroll to bottom of leftmost div
+                
+
+                wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]")));
+
+                IWebElement elementToScrollTo = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[47]"));
+
+                jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo);
+                Thread.Sleep(3000);
+
+                IWebElement elementToScrollTo2 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[49]"));
+                jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo2);
+                Thread.Sleep(4000);
+
+                IWebElement elementToScrollTo21 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[51]"));
+                jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo21);
+                Thread.Sleep(4000);
+
+                IWebElement elementToScrollTo22 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[53]"));
+                jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo22);
+                Thread.Sleep(4000);
+
+                IWebElement elementToScrollTo3 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[55]"));
+                jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo3);
+                Thread.Sleep(3000);
+
+                IWebElement elementToScrollTo4 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[85]"));
+                jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo4);
+                Thread.Sleep(3000);
+
+                IWebElement elementToScrollTo5 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[95]"));
+                jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo5);
+                Thread.Sleep(3000);
+
+                IWebElement elementToScrollTo6 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[100]"));
+                jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo6);
+                Thread.Sleep(3000);
+
+                IWebElement elementToScrollTo7 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[115]"));
+                jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo7);
+                Thread.Sleep(3000);
+
+                IWebElement elementToScrollTo8 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[121]"));
+                jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo8);
+                Thread.Sleep(3000);
+
+                wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[contains(text(), 'OLM-1')]")));
 
 
-            //Scroll to bottom of leftmost div
-            wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]")));
+                Thread.Sleep(3000);
+                Actions action = new Actions(webDriver);
 
-            IWebElement elementToScrollTo = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[47]"));
+                //gather testids like OLM-1 and so on
+                IList<IWebElement> AllTestsIds = webDriver.FindElements(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[@*]/div[1]/div/div[2]/span"));
 
-            jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo);
-            Thread.Sleep(3000);
+                return AllTestsIds;
+            }
 
-            IWebElement elementToScrollTo2 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[49]"));
-            jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo2);
-            Thread.Sleep(4000);
-
-            IWebElement elementToScrollTo21 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[51]"));
-            jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo21);
-            Thread.Sleep(4000);
-
-            IWebElement elementToScrollTo22 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[53]"));
-            jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo22);
-            Thread.Sleep(4000);
-
-            IWebElement elementToScrollTo3 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[55]"));
-            jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo3);
-            Thread.Sleep(3000);
-
-            IWebElement elementToScrollTo4 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[85]"));
-            jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo4);
-            Thread.Sleep(3000);
-
-            IWebElement elementToScrollTo5 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[95]"));
-            jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo5);
-            Thread.Sleep(3000);
-
-            IWebElement elementToScrollTo6 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[100]"));
-            jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo6);
-            Thread.Sleep(3000);
-
-            IWebElement elementToScrollTo7 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[115]"));
-            jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo7);
-            Thread.Sleep(3000);
-
-            IWebElement elementToScrollTo8 = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[121]"));
-            jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo8);
-            Thread.Sleep(3000);
-
-            wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//*[contains(text(), 'OLM-1')]")));
-            Thread.Sleep(3000);
-            Actions action = new Actions(webDriver);
-
-            //gather testids like OLM-1 and so on
-            IList<IWebElement> AllTestsIds = webDriver.FindElements(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[@*]/div[1]/div/div[2]/span"));
+            
 
             void assignAlready(List<TestcaseIDline> TestcaseIDlines, IList<IWebElement> AllTestsIds)
             {
@@ -370,13 +385,25 @@ namespace Selenium.NetCore.Test
 
                     foreach (var item in AllTestsIds)
                     {
-                        String itemText = item.Text;
-                        if (itemText == currentTestIDtoBeAssigned)
+                        webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[1]/app-test-case-run-list/div/div[2]/app-test-cases-list/div/div[2]/div[*]/div[1]/div/div[2]/span/a[text() = '" + currentTestIDtoBeAssigned + "']")).Click();
+                        //item.Click();
+                        //String testcaseIDinSecondColumn = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[2]/app-test-run-case/div/div/div/div/div[1] //a")).Text;
+                        webDriver.FindElement(By.XPath("//*[@id=\"contact-1\"]/div[1]/div[2]/div/div/span/span/button[1]/span")).Click();
+                        
+                        
+
+
+                        string xpathx = "/html/body/ngb-modal-window/div/div/app-test-run-full-screen/div/div[1]/app-test-run-case/div/div/div/div/div[1]/div[1]/h2/span/a";
+                        bool isVisible = webDriver.FindElement(By.XPath(xpathx)).Displayed;
+                        String testcaseIDinSecondColumn = webDriver.FindElement(By.XPath(xpathx)).Text;
+                        //
+                        //String itemText = testcaseIDinSecondColumn.Text;
+                        if (testcaseIDinSecondColumn == currentTestIDtoBeAssigned)
                         {
-                            IWebElement elementToScrollTo10 = webDriver.FindElement(By.LinkText(itemText));
+                            IWebElement elementToScrollTo10 = webDriver.FindElement(By.LinkText(testcaseIDinSecondColumn));
                             jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo10);
 
-                            IWebElement toBeClicked = webDriver.FindElement(By.LinkText(itemText));
+                            IWebElement toBeClicked = webDriver.FindElement(By.LinkText(testcaseIDinSecondColumn));
                             new Actions(webDriver)
                                 .MoveToElement(toBeClicked, 180, 10)
                                 .Click()
@@ -391,25 +418,35 @@ namespace Selenium.NetCore.Test
                             wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[3]/app-test-result/div/div[1]/app-filter-item/div/div/button[2]")));
 
                             String expectedtext = String.Concat("OLM-", TestcaseIDlines[index].testcaseID);
-                            String actualTextInSecondPaneAbove = webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[2]/app-test-run-case/div/div/div/div/div[1]/div[1]/h2/span")).Text;
+                            String actualTextInSecondPaneAbove = webDriver.FindElement(By.XPath("/html/body/ngb-modal-window/div/div/app-test-run-full-screen/div/div[1]/app-test-run-case/div/div/div/div/div[1]/div[1]/h2/span/a")).Text;
 
                             //if (expectedtext == actualTextInSecondPaneAbove)
                             //{
                                 Actions actions = new Actions(webDriver);
 
                                 // Perform a double-click action on the element
-                                actions.DoubleClick(webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[2]/app-test-run-case/div/div/div/div/div[2]/div[1]/div/app-test-run-case-details/div/div[1]/app-form-control[1]/div/div/div/editable/div"))).Perform();
+                                actions.DoubleClick(webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[2]/app-test-run-case/div/div/div/div/div[2]/div[1]/div/app-test-run-case-details/div/div[1]/app-form-control[1]/div/div/div/app-edit-in-place/div/span"))).Perform();
 
                                 String val = TestcaseIDlines[index].testerToBeAssignedOnFE;
 
-                                //THE ACTUAL ASSIGNMENT IS DONE HERE, COMMENTED OUT NOT TO CHANGE ONGOING TESTEXEC ASSIGNMENT
-                                //webDriver.FindElement(By.XPath("/html/body/div[1]/div/test-run-page/div/div[2]/div[3]/div/test-case-run/div[3]/div[2]/dl[1]/test-case-run-details/div/div[2]/div[4]/test-case-test-run-assignee-field/form/div/select")).SendKeys(val); 
-                                
-                            //}
 
+
+                            //THE ACTUAL ASSIGNMENT IS DONE HERE, COMMENT OUT WHEN NOT WANTING TO CHANGE ONGOING TESTEXEC ASSIGNMENT
+                            if (webDriver.FindElement(By.XPath("//*[@id=\"fdetails-tab-pane\"]/div/app-test-run-case-details/div/div[1]/app-form-control[1]/div/div/div/app-edit-in-place/div/span")).Text == "Unassigned" && webDriver.FindElement(By.XPath("/html/body/ngb-modal-window/div/div/app-test-run-full-screen/div/div[2]/app-test-result/div/div[1]/app-filter-item/div/div/button[4]")).GetAttribute("style") == "color: rgb(255, 255, 255)") //title[text()='Not Tested']/@style
+                            {
+                                webDriver.FindElement(By.XPath("/html/body/div[1]/div/app-angular-root/app-test-run-page/div/div/as-split/as-split-area[2]/app-test-run-case/div/div/div/div/div[2]/div[1]/div/app-test-run-case-details/div/div[1]/app-form-control[1]/div/div/div/app-edit-in-place/div/div/div/ng-select/div/div/div[3]/input")).SendKeys(val);
+                            }
+
+                            //
+
+                            ///html/body/div[1]/div/test-run-page/div/div[2]/div[3]/div/test-case-run/div[3]/div[2]/dl[1]/test-case-run-details/div/div[2]/div[4]/test-case-test-run-assignee-field/form/div/select
+
+                            //}
+                            //close full screen setting with X in upper right corner
+                            webDriver.FindElement(By.XPath("//*[@id=\"contact-1\"]/div[1]/div[1]/button/span")).Click();
                             Thread.Sleep(1000);
                             index++;
-                            jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo10);
+                            //jse.ExecuteScript("arguments[0].scrollIntoView(true)", elementToScrollTo10);
                         }
                     }
                 }
@@ -417,8 +454,9 @@ namespace Selenium.NetCore.Test
 
             //foreach (var TestcaseIDline in TestcaseIDlines)
             //{
-                /* TestcaseIDline.testcaseID; TestcaseIDline.groupNo; */
-                assignAlready(TestcaseIDlines, AllTestsIds);
+            /* TestcaseIDline.testcaseID; TestcaseIDline.groupNo; */
+            IList<IWebElement> AllTestsIds = scrollLeftmostDiv();
+            assignAlready(TestcaseIDlines, AllTestsIds);
             //}
         }
 
@@ -426,14 +464,14 @@ namespace Selenium.NetCore.Test
                                     "Kovács Kata",
                                     "Kovács Kata",
                                     "Kovács Kata",
-                                    "Kovács Kata",
                                     "Kovács Kata", 
-                                    "Kovács Kata", //6
-                                    "Gáspár Dóra",
+                                    "Kovács Kata", //5
                                     "Gáspár Dóra", 
-                                    "Gáspár Dóra", 
-                                    "Gáspár Dóra", //4
-                                    "Sólyom András" //1
+                                    "Gáspár Dóra", //2
+                                    "Sólyom András", 
+                                    "Sólyom András", 
+                                    "Sólyom András", 
+                                    "Sólyom András" //4
         }; //hány darab tizenegyedet vigyen el pl. egy ember: 5-3-2-1
 
 
@@ -444,7 +482,7 @@ namespace Selenium.NetCore.Test
         [Fact]
         public void OLM_0_2_AssignTestCases()
         {
-            string[] testCaseLinesWithGroupNoReadFromFile = File.ReadAllLines("C:/Users/gluck/OneDrive/Documents/1 Structured Random Kft/elszámolás/2 OLM/11edes felosztás jun 6 2023.csv");
+            string[] testCaseLinesWithGroupNoReadFromFile = File.ReadAllLines("C:/Users/gluck/Documents/1 Structured Random Kft/Elszámolás/2 OLM/11edes felosztás jun 6 2023.csv");
 
             List<TestcaseIDline> testCaseIDlist = new List<TestcaseIDline>();
 
