@@ -346,6 +346,7 @@ namespace Selenium.NetCore.Test
             Thread.Sleep(3000);
 
             var jse = (IJavaScriptExecutor)webDriver;
+            //scrollLeftmostDiv();
 
             //scrollLeftmostDivAndGatherXPathsToTestIDs
             (IList<IWebElement> AllTestsIds, List<TestcaseIDInLeftmostDiv> TestcaseIDInLeftmostDivlistInclXpaths) = scrollLeftmostDivAndGatherXPathsToTestIDs();
