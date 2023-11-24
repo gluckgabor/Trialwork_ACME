@@ -34,7 +34,9 @@ namespace Selenium.NetCore.Test
     {      
         public static IWebDriver webDriver;
         private readonly ITestOutputHelper output;
+
         public List<workitem> workitem_list = new List<workitem>();
+        bool WI4isMoreThan13;
 
         public ChromeTests(ITestOutputHelper output)
         {
@@ -85,7 +87,6 @@ namespace Selenium.NetCore.Test
         [Fact]
         public void ACME_0_1_Navigate_to_Main_Site()
         {
-            
             string filter_parameter = "WI4";
 
             navigate_to_Main_Site();
@@ -95,6 +96,8 @@ namespace Selenium.NetCore.Test
             filter_on_WI4_type_datarows_and__logging_them(filter_parameter);
             verify_WI4_type_workitem_count(filter_parameter);
             logout();
+
+            Xunit.Assert.True(WI4isMoreThan13);
         }
 
         internal void navigate_to_Main_Site() {
@@ -191,7 +194,7 @@ namespace Selenium.NetCore.Test
         }
 
 
-        internal void verify_WI4_type_workitem_count(string filter_parameter)
+        internal bool verify_WI4_type_workitem_count(string filter_parameter)
         {
             int filtered_counter = 0;
 
@@ -203,6 +206,16 @@ namespace Selenium.NetCore.Test
                 }
             }
             Console.WriteLine("Filtered total: " + filtered_counter);
+
+            if (filtered_counter > 13)
+            {
+                WI4isMoreThan13 = true;        
+            }
+            else
+            {
+                WI4isMoreThan13 = false;    
+            }
+            return WI4isMoreThan13;
         }
 
 
